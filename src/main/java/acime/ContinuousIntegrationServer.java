@@ -82,9 +82,12 @@ public class ContinuousIntegrationServer extends AbstractHandler
 		if(request.getHeader("Content-Type").equals("application/json")) {
 		    // Collect parameters
 		    String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		    Object jsonMap = JSON.parse(body);
-		    String info = ((Map<String, String>)jsonMap).get("jql");
-		    response.getWriter().println(info);
+		    try {
+			PullRequestEvent pre = new PullRequestEvent(body);
+			response.getWriter().println(pre.getHeadHash());
+		    }
+		    catch(Exception e) {
+		    }
 		}
 	    }
 	    else {
