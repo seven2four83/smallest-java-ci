@@ -20,9 +20,9 @@ public class GradleComm {
        @param dir Directory to run in, has to be absolute.
        @param cmd Command to run in.
     **/
-    private String cdAndGo(Path dir, String cmd) throws IOException {
+    private String cdAndGo(File dir, String cmd) throws IOException {
 	assert(dir.isAbsolute());
-	Process p = this.rfac.makeRuntime().exec("cd " + dir.toString() + " && " + cmd);
+	Process p = this.rfac.makeRuntime().exec(cmd, null, dir);
 	BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	return stdout.lines().collect(Collectors.joining(System.lineSeparator()));
     }
@@ -32,7 +32,7 @@ public class GradleComm {
        @param directory Directory to run in.
        @return output from gradle.
      **/
-    public String buildAt(Path directory) throws IOException {
+    public String buildAt(File directory) throws IOException {
 	return this.cdAndGo(directory, "gradle build");
     }
     /**
@@ -40,7 +40,7 @@ public class GradleComm {
        @param directory Directory to run in.
        @return output from gradle.
      **/
-    public String compileAt(Path directory) throws IOException {
+    public String compileAt(File directory) throws IOException {
 	return this.cdAndGo(directory, "gradle compileJava");
     }
     /**
@@ -48,7 +48,7 @@ public class GradleComm {
        @param directory Directory to run in.
        @return output from gradle.
      **/
-    public String testAt(Path directory) throws IOException {
+    public String testAt(File directory) throws IOException {
 	return this.cdAndGo(directory, "gradle test");
     }
 }
