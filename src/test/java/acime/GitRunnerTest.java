@@ -21,7 +21,6 @@ public class GitRunnerTest {
 	    GitRunner gr = new GitRunner(new BasicRuntimeFactory());
 	    File repoDir = gr.cloneRepo("https://github.com/jsjolen/smallest-java-ci.git");
         File repoContainer = new File(repoDir.getPath() + "/smallest-java-ci");
-        Thread.sleep(1000);
         Assertions.assertEquals(true, repoDir.isDirectory());
         Assertions.assertEquals(true, repoContainer.isDirectory());
         repoDir.delete();
@@ -37,7 +36,6 @@ public class GitRunnerTest {
     public void testCheckout() throws IOException, InterruptedException {
         GitRunner gr = new GitRunner(new BasicRuntimeFactory());
         File repoDir = gr.cloneRepo("https://github.com/jsjolen/smallest-java-ci.git");
-        Thread.sleep(2000);
         gr.checkoutCommit(repoDir, "1491e8e189592d6ac7188dde490b2171a9221f29");
         File repoContainer = new File(repoDir.getPath() + "/smallest-java-ci/src/main/java/acime");
         String[] repoFileNames= {"ContinuousIntegrationServer.java"};
@@ -67,5 +65,4 @@ public class GitRunnerTest {
         GitRunner gr = new GitRunner(new BasicRuntimeFactory());
         Assertions.assertEquals(false, gr.isValidGitRepo("This is an invalid repository URL."));
     }
-
 }
