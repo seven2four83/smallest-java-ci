@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.Map;
 
+import acime.Models.GitHubStatus;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -28,6 +29,9 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	    response.setContentType("text/html;charset=utf-8");
 	    response.setStatus(HttpServletResponse.SC_OK);
 	    baseRequest.setHandled(true);
+	    // Jagan: not sure if there will be a request where GH status(notif) need not be created.
+		// If exists, set this bool to false in appropriate if block
+	    boolean shouldCreateGitHubStatus = true;
 
 	    System.out.println(target);
 	    /**
@@ -57,6 +61,12 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	    else {
 		response.getWriter().println("Nothing to see here.");
 	    }
+	    if(shouldCreateGitHubStatus){
+	    	//TODO: Check where SHA is parsed
+			GitHubStatus status = new GitHubStatus.Builder("trial").build();
+			GitHubStatusHandler ghStatusHandler = new GitHubStatusHandler(status);
+			ghStatusHandler.postStatus();
+		}
 	}
  
     // used to start the CI server in command line
