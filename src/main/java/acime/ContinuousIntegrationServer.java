@@ -182,7 +182,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     public String presentFolderIndex(String target)
 	throws IOException, Exception
 	{
-	    if(!target.equals("/builds") || !target.equals("/tests")) {
+	    if(!target.equals("/builds") && !target.equals("/tests")) {
 		throw new Exception("Wrong directory!");
 	    }
 	    FileReaderFactory frf = new FileReaderFactory();
