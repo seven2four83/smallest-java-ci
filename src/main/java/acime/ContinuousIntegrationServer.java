@@ -81,10 +81,17 @@ public class ContinuousIntegrationServer extends AbstractHandler
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
 	{
+		//TODO: Remove. Test code:
+		GitHubStatus status = new GitHubStatus.Builder("trial").build();
+		GitHubStatusHandler ghStatusHandler = new GitHubStatusHandler(status);
+		ghStatusHandler.postStatus();
+
 	    Server server = new Server(8080);
 	    server.setHandler(new ContinuousIntegrationServer()); 
 	    server.start();
 	    server.join();
+
+
 	}
    
     /**
@@ -137,7 +144,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	{
 	    String[] parts = target.split("/");
 	    response.getWriter().println(htmlPreamble);
-	    response.getWriter().println("Welcome to build. hash is: "+parts[parts.length-1]);
+	    response.getWriter().println("Welcome to buiHttpClientld. hash is: "+parts[parts.length-1]);
 	    response.getWriter().println(htmlPostamble);
 	}
     /**
