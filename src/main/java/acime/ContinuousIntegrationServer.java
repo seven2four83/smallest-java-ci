@@ -20,6 +20,14 @@ import org.eclipse.jetty.util.ajax.JSON;
 */
 public class ContinuousIntegrationServer extends AbstractHandler
 {
+    /**
+       String that should be emitted before HTML is emitted.
+     **/
+    private String htmlPreamble = "<html><body>";
+    /**
+       String that should be emitted after HTML is emitted.
+     **/
+    private String htmlPostamble = "</html></body>";
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -105,7 +113,9 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    String[] parts = target.split("/");
+	    response.getWriter().println(htmlPreamble);
 	    response.getWriter().println("Welcome to test, hash is: "+parts[parts.length-1]);
+	    response.getWriter().println(htmlPostamble);
 	}
     /**
        Serves as an entry-point to build presentation, returns an HTML representation of the build run defined by URL.
@@ -116,7 +126,9 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    String[] parts = target.split("/");
+	    response.getWriter().println(htmlPreamble);
 	    response.getWriter().println("Welcome to build. hash is: "+parts[parts.length-1]);
+	    response.getWriter().println(htmlPostamble);
 	}
     /**
        Serves as an entry-point to build presentation, returns an HTML representation of the last 100 build runs.
@@ -126,6 +138,9 @@ public class ContinuousIntegrationServer extends AbstractHandler
 		     HttpServletResponse response)
 	throws IOException, ServletException
 	{
+	    response.getWriter().println(htmlPreamble);
+	    response.getWriter().println("Welcome to build.");
+	    response.getWriter().println(htmlPostamble);
 	}
     /**
        Serves as an entry-point to build presentation, returns an HTML representation of the last 100 test runs.
@@ -135,6 +150,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
 		     HttpServletResponse response)
 	throws IOException, ServletException
 	{
+	    response.getWriter().println(htmlPreamble);
 	    response.getWriter().println("Welcome to test.");
+	    response.getWriter().println(htmlPostamble);
 	}
 }
