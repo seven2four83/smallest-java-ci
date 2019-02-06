@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.*;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
@@ -125,7 +126,6 @@ public class ContinuousIntegrationServer extends AbstractHandler
 		     HttpServletResponse response)
 	throws IOException, ServletException
 	{
-	    response.getWriter().println("Welcome to build.");
 	}
     /**
        Serves as an entry-point to build presentation, returns an HTML representation of the last 100 test runs.
