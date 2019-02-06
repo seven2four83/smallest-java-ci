@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Read tests from log file
  */
 public class LogReader {
-    private final static int BUFFER = 10000;
     private String directory;
     private ReaderFactory readerFactory;
 
@@ -114,5 +114,19 @@ public class LogReader {
         }
 
         return output;
+    }
+    /**
+       List the logs of the directory.
+     **/
+    public ArrayList<String> listDirectory() {
+	File f = new File(this.directory);
+	File[] files = f.listFiles();
+	ArrayList<String> filenames = new ArrayList<String>();
+	for(File file : files) {
+	    if(file.isFile()) {
+		filenames.add(file.getName());
+	    }
+	}
+	return filenames;
     }
 }

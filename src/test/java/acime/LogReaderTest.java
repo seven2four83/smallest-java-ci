@@ -135,7 +135,7 @@ public class LogReaderTest {
        Check that the content in all files is right
      **/
     @Test
-    void correctContentAll() {
+    void correctContentAll() throws IOException {
         File dir = new File(".", "testFolder");
         File file1 = new File( dir, "nr1");
         File file2 = new File( dir, "nr2");
@@ -157,7 +157,7 @@ public class LogReaderTest {
             writer.write("3");
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+	    throw e;
         }
 
 
