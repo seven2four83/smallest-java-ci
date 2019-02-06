@@ -149,7 +149,12 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    response.getWriter().println(htmlPreamble);
-	    response.getWriter().println(this.presentFolderIndex(response, target));
+	    try {
+		response.getWriter().println(this.presentFolderIndex(target));
+	    }
+	    catch(Exception e) {
+		response.getWriter().println("Failed to load logs");
+	    }
 	    response.getWriter().println(htmlPostamble);
 	}
     /**
@@ -161,7 +166,12 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    response.getWriter().println(htmlPreamble);
-	    response.getWriter().println(this.presentFolderIndex(response, target));
+	    try {
+		response.getWriter().println(this.presentFolderIndex(target));
+	    }
+	    catch(Exception e) {
+		response.getWriter().println("Failed to load logs");
+	    }
 	    response.getWriter().println(htmlPostamble);
 	}
 
@@ -172,7 +182,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     public String presentFolderIndex(String target)
 	throws IOException, Exception
 	{
-	    if(!target.equals("/builds") || target.equals("/tests")) {
+	    if(!target.equals("/builds") || !target.equals("/tests")) {
 		throw new Exception("Wrong directory!");
 	    }
 	    FileReaderFactory frf = new FileReaderFactory();
