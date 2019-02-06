@@ -31,6 +31,12 @@ public class GitRunner {
         Path tempDir = Files.createTempDirectory(null);
         String cmd = "git clone " + clone_url;
         Process p = this.rfac.makeRuntime().exec(cmd, null, tempDir.toFile());
+	try {
+	    p.waitFor();
+	}
+	catch(InterruptedException e) {
+
+	}
         tempDir.toFile().deleteOnExit();
         return tempDir.toFile();
     }
@@ -45,6 +51,12 @@ public class GitRunner {
         String cmd = "git checkout " + commit_hash;
         File repository = new File(repoDir.getPath()+"/"+repoDir.list()[0]);
         Process p = this.rfac.makeRuntime().exec(cmd, null, repository);
+	try {
+	    p.waitFor();
+	}
+	catch(InterruptedException e) {
+
+	}
     }
 
     /**
@@ -56,6 +68,12 @@ public class GitRunner {
     public boolean isValidGitRepo(String clone_url) throws IOException {
         String cmd = "git ls-remote  " + clone_url;
         Process p = this.rfac.makeRuntime().exec(cmd, null, new File(System.getProperty("user.dir")));
+	try {
+	    p.waitFor();
+	}
+	catch(InterruptedException e) {
+
+	}
         BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String output = stdout.lines().collect(Collectors.joining(System.lineSeparator()));
         return !output.isEmpty();
