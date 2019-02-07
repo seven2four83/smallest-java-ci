@@ -43,13 +43,12 @@ public class GitRunner {
 
     /**
      * Checks out the given commit in the provided repository location
-     * @param repoDir Where the repo is located
+     * @param repository Where the repo is located
      * @param commit_hash The commit hash to checkout
      * @throws IOException
      */
-    public void checkoutCommit(File repoDir, String commit_hash) throws IOException {
+    public void checkoutCommit(File repository, String commit_hash) throws IOException {
         String cmd = "git checkout " + commit_hash;
-        File repository = new File(repoDir.getPath()+"/"+repoDir.list()[0]);
         Process p = this.rfac.makeRuntime().exec(cmd, null, repository);
 	try {
 	    p.waitFor();
