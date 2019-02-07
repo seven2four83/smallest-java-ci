@@ -28,7 +28,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     /**
        String that should be emitted after HTML is emitted.
      **/
-    private String htmlPostamble = "</html></body>";
+    private String htmlPostamble = "</body></html>";
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
