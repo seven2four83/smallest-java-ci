@@ -126,13 +126,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
 					String buildOutput = gc.compileAt(repository);
 					String testOutput = gc.testAt(repository);
 
-					File buildLogsDir = new File("./logs/builds");
-					File testLogsDir = new File("./logs/tests");
-					if (!buildLogsDir.exists()) buildLogsDir.mkdirs();
-					if (!testLogsDir.exists()) testLogsDir.mkdirs();
-
-					LogWriter buildWriter = new LogWriter(buildLogsDir.getPath(), new FileWriterFactory());
-					LogWriter testWriter = new LogWriter(testLogsDir.getPath(), new FileWriterFactory());
+					LogWriter buildWriter = new LogWriter(System.getProperty("user.dir")+"/builds", new FileWriterFactory());
+					LogWriter testWriter = new LogWriter(System.getProperty("user.dir")+"/tests", new FileWriterFactory());
 
 					buildWriter.log(buildOutput, commitHash, timestamp);
 					testWriter.log(testOutput, commitHash, timestamp);
