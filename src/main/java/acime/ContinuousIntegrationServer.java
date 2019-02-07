@@ -51,20 +51,20 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	    }
 	    // Given a test/someSHA1Hash
 	    // Dispatch to handleTestSingle
-	    else if(target.matches("/test/[0-9a-zA-Z]+")) {
+	    else if(target.matches("/tests/[0-9a-zA-Z]+")) {
 		this.handleTestSingle(target, baseRequest, request, response);
 	    }
 	    // Given only test just present last 100 builds
-	    else if(target.matches("/test")) {
+	    else if(target.matches("/tests")) {
 		this.handleTest(target, baseRequest, request, response);
 	    }
 	    // Given a build/someSHA1Hash
 	    // Dispatch to handleBuildSingle
-	    else if(target.matches("/build/[0-9a-zA-Z]+")) {
+	    else if(target.matches("/builds/[0-9a-zA-Z]+")) {
 		this.handleBuildSingle(target, baseRequest, request, response);
 	    }
 	    // Given only build just present last 100 builds
-	    else if(target.matches("/build")) {
+	    else if(target.matches("/builds")) {
 		this.handleBuild(target, baseRequest, request, response);
 	    }
 	    else {
@@ -149,19 +149,46 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    response.getWriter().println(htmlPreamble);
-	    response.getWriter().println("Welcome to build.");
+	    try {
+		response.getWriter().println(this.presentFolderIndex(target));
+	    }
+	    catch(Exception e) {
+		response.getWriter().println("Failed to load logs");
+	    }
 	    response.getWriter().println(htmlPostamble);
 	}
     /**
        Serves as an entry-point to build presentation, returns an HTML representation of the last 100 test runs.
     **/
     void handleTest(String target, Request baseRequest,
-		     HttpServletRequest request,
-		     HttpServletResponse response)
+		    HttpServletRequest request,
+		    HttpServletResponse response)
 	throws IOException, ServletException
 	{
 	    response.getWriter().println(htmlPreamble);
-	    response.getWriter().println("Welcome to test.");
+	    try {
+		response.getWriter().println(this.presentFolderIndex(target));
+	    }
+	    catch(Exception e) {
+		response.getWriter().println("Failed to load logs");
+	    }
 	    response.getWriter().println(htmlPostamble);
+	}
+
+    /**
+       Given a target which is either "/builds" or "/tests", read all the logs from it
+       and return the information as a string.
+     **/
+    public String presentFolderIndex(String target)
+	throws IOException, Exception
+	{
+	    if(!target.equals("/builds") && !target.equals("/tests")) {
+		throw new Exception("Wrong directory!");
+	    }
+	    FileReaderFactory frf = new FileReaderFactory();
+	    LogReader logReader = new LogReader(System.getProperty("user.dir")+target, frf);
+	    ArrayList<String> filenames = logReader.listDirectory();
+	    IndexHtml builder = new IndexHtml();
+	    return builder.indexBuild(filenames, target+"/");
 	}
 }
