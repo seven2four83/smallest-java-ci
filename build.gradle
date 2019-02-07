@@ -28,7 +28,6 @@ dependencies {
     compile group: 'org.eclipse.jetty', name: 'jetty-util-ajax', version: '9.4.14.v20181114'
     compile group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.14.v20181114'
     compile 'javax.mail:mail:1.4.7'
-
 }
 
 sourceCompatibility = '1.8'
