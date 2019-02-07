@@ -33,5 +33,13 @@ public class PullRequestEvent {
 	String hash = ((Map<String, String>)head).get("sha");
 	return hash;
     }
+    /**
+       Get the clone_url of the repository that the pull request originates from.
+     **/
+    public String getCloneURL() {
+        Object repository = ((Map<String, String>)jsonObject).get("repository");
+        String clone_url = ((Map<String, String>)repository).get("clone_url");
+        return clone_url;
+    }
     
 }

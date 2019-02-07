@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.*;
@@ -25,10 +27,15 @@ public class ContinuousIntegrationServer extends AbstractHandler
        String that should be emitted before HTML is emitted.
      **/
     private String htmlPreamble = "<html><body>";
+        private String htmlPostamble = "</body></html>";
     /**
        String that should be emitted after HTML is emitted.
      **/
-    private String htmlPostamble = "</body></html>";
+	/**
+	 * List of identifiers representing each unique build.
+	 */
+	private List<String> buildIdentifiers = new ArrayList<>();
+
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -97,20 +104,46 @@ public class ContinuousIntegrationServer extends AbstractHandler
 	throws IOException, ServletException
 	{
 	    if(request.getMethod().equals("POST")) {
-		// Check if JSON
-		if(request.getHeader("Content-Type").equals("application/json")) {
-		    // Collect parameters
-		    String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		    try {
-			PullRequestEvent pre = new PullRequestEvent(body);
-			response.getWriter().println(pre.getHeadHash());
-		    }
-		    catch(Exception e) {
-		    }
-		}
+			// Check if JSON
+			if(request.getHeader("Content-Type").equals("application/json")) {
+				// Collect parameters
+				String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+				GitRunner gr = new GitRunner(new BasicRuntimeFactory());
+				GradleComm gc = new GradleComm(new BasicRuntimeFactory());
+				try {
+					PullRequestEvent pre = new PullRequestEvent(body);
+					String commitHash = pre.getHeadHash();
+					String cloneURL = pre.getCloneURL();
+					String timestamp = Long.toString(new Timestamp(System.currentTimeMillis()).getTime());
+					String identifier = commitHash+timestamp;
+					buildIdentifiers.add(identifier);
+
+					response.getWriter().println(commitHash);
+					response.getWriter().println(cloneURL);
+
+					File repoContainer = gr.cloneRepo(cloneURL);
+					File repository = new File(repoContainer+"/"+repoContainer.list()[0]);
+					gr.checkoutCommit(repository, pre.getHeadHash());
+					String buildOutput = gc.compileAt(repository);
+					String testOutput = gc.testAt(repository);
+
+					File buildLogsDir = new File(System.getProperty("user.dir")+"/builds");
+					File testLogsDir = new File(System.getProperty("user.dir")+"/tests");
+					if (!buildLogsDir.exists()) buildLogsDir.mkdirs();
+					if (!testLogsDir.exists()) testLogsDir.mkdirs();
+
+					LogWriter buildWriter = new LogWriter(buildLogsDir.getPath(), new FileWriterFactory());
+					LogWriter testWriter = new LogWriter(testLogsDir.getPath(), new FileWriterFactory());
+
+					buildWriter.log(buildOutput, commitHash, timestamp);
+					testWriter.log(testOutput, commitHash, timestamp);
+				}
+				catch(Exception e) {
+				}
+			}
 	    }
 	    else {
-		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 	    }
 	}
     /**
