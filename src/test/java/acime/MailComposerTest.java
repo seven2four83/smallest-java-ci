@@ -10,7 +10,7 @@ public class MailComposerTest {
      */
     @Test
     public void validDetails(){
-        Assertions.assertTrue(new MailComposer().sendEmail("vikibornin1991@gmail.com","From Test fn"));
+        Assertions.assertTrue(new MailComposer().sendEmail("vikibornin1991@gmail.com","From Test fn","Test fn subject"));
     }
 
     /**
@@ -18,14 +18,24 @@ public class MailComposerTest {
      */
     @Test
     public void invalidRecipient(){
-        Assertions.assertFalse(new MailComposer().sendEmail("invalid","From Test fn"));
+        Assertions.assertFalse(new MailComposer().sendEmail("invalid","From Test fn","Test fn subject"));
     }
+
+
+    /**
+     * When the body is empty, no email is sent
+     */
+    @Test
+    public void EmptySubject(){
+        Assertions.assertFalse(new MailComposer().sendEmail("invalid","From Test fn",""));
+    }
+
 
     /**
      * When the body is empty, no email is sent
      */
     @Test
     public void EmptyBody(){
-        Assertions.assertFalse(new MailComposer().sendEmail("invalid",""));
+        Assertions.assertFalse(new MailComposer().sendEmail("invalid","","Test fn subject"));
     }
 }

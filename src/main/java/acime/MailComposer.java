@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class MailComposer {
-    public boolean sendEmail(String recipients, String body){
+    public boolean sendEmail(String recipients, String body, String subject){
         boolean didSend = false;
         //Approach 1: Gmail SMTP
 
@@ -41,7 +41,12 @@ public class MailComposer {
             }
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipients));
-            message.setSubject("Testing Subject");
+            if(subject.length() == 0){
+                //Dummy hardcoding for local testing
+                subject = "Testing Subject";
+                return false;
+            }
+            message.setSubject(subject);
             if(body.length() == 0){
                 //Dummy hardcoding for local testing
                 body = "Dear Mail Crawler,"
