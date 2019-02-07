@@ -24,6 +24,8 @@ dependencies {
     compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '7.0.2.v20100331'
     // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compile 'javax.mail:mail:1.4.7'
+
 }
 
 sourceCompatibility = '1.8'
