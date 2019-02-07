@@ -144,7 +144,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
 					    Thread.sleep(5);
 					    // Hard coding these things.
 					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
-								      "46", logOutput);
+								      "46", testOutput);
 					}
 					catch(Exception e) {
 					    System.out.println(e);
