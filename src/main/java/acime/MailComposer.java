@@ -52,7 +52,6 @@ public class MailComposer {
 
             Transport.send(message);
             didSend = true;
-            System.out.println("Done");
 
         } catch (MessagingException e) {
             e.printStackTrace();
