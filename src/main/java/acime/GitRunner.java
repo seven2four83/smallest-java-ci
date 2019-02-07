@@ -28,7 +28,7 @@ public class GitRunner {
         if (!isValidGitRepo(clone_url)) {
             return null;
         }
-        Path tempDir = Files.createTempDirectory(null);
+        Path tempDir = Files.createTempDirectory(null)
         String cmd = "git clone " + clone_url
         Process p = this.rfac.makeRuntime().exec(cmd, null, tempDir.toFile());
 	try {
