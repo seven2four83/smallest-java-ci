@@ -103,6 +103,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
 		       HttpServletResponse response)
 	throws IOException, ServletException
 	{
+
+	    
 	    if(request.getMethod().equals("POST")) {
 			// Check if JSON
 			if(request.getHeader("Content-Type").equals("application/json")) {
