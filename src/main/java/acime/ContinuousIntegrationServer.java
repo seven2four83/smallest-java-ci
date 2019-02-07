@@ -121,6 +121,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
 					response.getWriter().println(commitHash);
 					response.getWriter().println(cloneURL);
 
+
+					
 					File repoContainer = gr.cloneRepo(cloneURL);
 					File repository = new File(repoContainer+"/"+repoContainer.list()[0]);
 					gr.checkoutCommit(repository, pre.getHeadHash());
