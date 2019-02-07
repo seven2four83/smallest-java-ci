@@ -64,3 +64,7 @@ The structure of what you should do for a new feature looks like this:
 - Wrote this README (except the contributions)
 
 ## Nikhil Modak
+- Wrote Git Communication Interface
+- Wrote most of Webhook Handler method which invokes the Git + Gradle interfaces
+- Troubleshot + Debugged outstanding issues
+- Did Code Reviews
