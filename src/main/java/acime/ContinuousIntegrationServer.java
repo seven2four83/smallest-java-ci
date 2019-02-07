@@ -15,7 +15,7 @@ import acime.Models.GitHubStatus;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.eclipse.jetty.util.ajax.JSON;
+import org.eclipse.jetty.util.ajax.*;
 
 /** 
     Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -137,6 +137,18 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 					buildWriter.log(buildOutput, commitHash, timestamp);
 					testWriter.log(testOutput, commitHash, timestamp);
+					try {
+					    // Hard coding these things.
+					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
+								      "46", buildOutput);
+					    Thread.sleep(5);
+					    // Hard coding these things.
+					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
+								      "46", logOutput);
+					}
+					catch(Exception e) {
+					    System.out.println(e);
+					}
 				}
 				catch(Exception e) {
 				}
