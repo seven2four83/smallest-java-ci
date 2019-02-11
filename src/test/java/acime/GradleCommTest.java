@@ -17,11 +17,9 @@ import java.nio.file.*;
    Instead it depends on manual intervention of the programmer -- sorry about that :-/.
  **/
 public class GradleCommTest {
-    /*
     @Test
     public void testBuild() throws IOException {
 	GradleComm gc = new GradleComm(new BasicRuntimeFactory());
-	System.out.println(gc.buildAt(new File(System.getProperty("user.dir"))));
+	Assertions.assertTrue(gc.buildAt(new File(System.getProperty("user.dir"), "src/test/java/acime/DECIDE")).length() != 0);
     }
-    */
 }
