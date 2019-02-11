@@ -160,15 +160,15 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 						GitHubStatus buildStatus = new GitHubStatus.Builder(GHStatusUtils.parseGradleOutput(buildOutput)).
 								withDescription("Gradle build result from CI").
-								withContext("continuous-integration/jenkins").
+								withContext("continuous-integration/generalBuild").
 								build();
 						new GitHubStatusHandler(buildStatus).postStatus("jsjolen","smallest-java-ci",pre.getHeadHash(),"smallestjavaci", "Basic c21hbGxlc3RqYXZhY2k6ZXZlcnl0aGluZ2lzaGVyZTEyMw==");
 
-//						GitHubStatus testStatus = new GitHubStatus.Builder(GHStatusUtils.parseGradleOutput(testOutput)).
-//								withDescription("Gradle test result from CI").
-//								withContext("continuous-integration/jenkins").
-//								build();
-//						new GitHubStatusHandler(testStatus).postStatus("jsjolen","smallest-java-ci",pre.getHeadHash(),"ciServerTestResults","REgyNjQyY2lzZXJ2ZXI=");
+						GitHubStatus testStatus = new GitHubStatus.Builder(GHStatusUtils.parseGradleOutput(testOutput)).
+								withDescription("Gradle test result from CI").
+								withContext("continuous-integration/testCases").
+								build();
+						new GitHubStatusHandler(testStatus).postStatus("jsjolen","smallest-java-ci",pre.getHeadHash(),"smallestjavaci", "Basic c21hbGxlc3RqYXZhY2k6ZXZlcnl0aGluZ2lzaGVyZTEyMw==");
 					}
 					catch(Exception e) {
 					    System.out.println(e);

@@ -1,6 +1,7 @@
 package acime;
 
 import acime.Models.GitHubStatus;
+import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -48,29 +49,17 @@ public class GitHubStatusHandler {
      */
 
     public boolean postStatus(String repoOwner, String repo, String hash, String user, String pass) throws Exception{
-
-
         org.eclipse.jetty.client.HttpClient httpClient = new HttpClient();
-        Base64.Encoder encoder = Base64.getEncoder();
         httpClient.start();
-//        Request req = httpClient.POST("https://api.github.com/repos/jsjolen/smallest-java-ci/statuses/c7cf7d3ae6f7638a6c7c02a8f4630d803c52478b");
         Request req = httpClient.POST("https://api.github.com/repos/"+repoOwner+"/"+repo+"/statuses/"+hash);
         req.header(HttpHeader.ACCEPT, "application/vnd.github.v3+json");
         req.header(HttpHeader.CONTENT_TYPE, "application/json");
-//        req.header(HttpHeader.USER_AGENT, "smallestjavaci");
-//        req.header(HttpHeader.AUTHORIZATION, "Basic c21hbGxlc3RqYXZhY2k6ZXZlcnl0aGluZ2lzaGVyZTEyMw==");
         req.header(HttpHeader.USER_AGENT, user);
         req.header(HttpHeader.AUTHORIZATION, "Basic "+pass);
-//        StringBuilder json = new StringBuilder();
-//        Map<String, String> m = new HashMap<String,String>();
-//        m.put("body", body);
-//        JSON jsonBuilder = new JSON();
-//        jsonBuilder.appendMap(json, m);
-        req.content(new StringContentProvider("{\"state\":\"pending\",\"target_url\":\"https://example.com/build/status\",\"description\":\"Update10\",\"context\":\"continuous-integration/jenkins\"}"), "application/json");
+        String statusJson = new Gson().toJson(status);
+        req.content(new StringContentProvider(statusJson), "application/json");
         ContentResponse cr = req.send();
         System.out.println(cr.getContentAsString());
         return true;
-
-
     }
 }
