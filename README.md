@@ -62,6 +62,7 @@ The structure of what you should do for a new feature looks like this:
 - Did some debugging of others code
 - Did some code reviews
 - Wrote this README (except the contributions)
+- Write some HTTP requests (along with basic Github POSt request)
 
 ## Nikhil Modak
 - Wrote Git Communication Interface
