@@ -1,0 +1,3 @@
+[submodule "src/test/java/acime/DECIDE"]
+	path = src/test/java/acime/DECIDE
+	url = git@gits-15.sys.kth.se:Project15/DECIDE.git
