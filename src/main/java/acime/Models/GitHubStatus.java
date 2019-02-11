@@ -10,14 +10,14 @@ import javax.swing.plaf.ButtonUI;
 
 public class GitHubStatus {
 
-    String state, target_url, description, context, commitURL;
+    String state, target_url, description, context;
 
     private GitHubStatus(){
         //private constructor
     }
 
     public static class Builder {
-        String state, target_url, description, context,commitURL;
+        String state, target_url, description, context;
 
         public Builder(String state){
             this.state = state;
@@ -38,10 +38,10 @@ public class GitHubStatus {
             return this;
         }
 
-        public  Builder withcommitURL(String commitURL){
-            this.commitURL = commitURL;
-            return this;
-        }
+//        public  Builder withcommitURL(String commitURL){
+//            this.commitURL = commitURL;
+//            return this;
+//        }
 
         /**
          * Function that composes all variables of GHStatus from the counterparts in the builder
@@ -53,7 +53,7 @@ public class GitHubStatus {
             status.context = this.context;
             status.description = this.description;
             status.target_url = this.target_url;
-            status.commitURL = this.commitURL;
+//            status.commitURL = this.commitURL;
             return status;
         }
 

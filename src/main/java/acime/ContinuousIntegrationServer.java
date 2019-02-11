@@ -88,10 +88,11 @@ public class ContinuousIntegrationServer extends AbstractHandler
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
 	{
-		//TODO: Remove. Test code:
-		GitHubStatus status = new GitHubStatus.Builder("trial").build();
-		GitHubStatusHandler ghStatusHandler = new GitHubStatusHandler(status);
-		ghStatusHandler.postStatus();
+		//TODO: Remove. Test code. Will be in master branch for now for debugging even when server is unavailable
+//		GitHubStatus status = new GitHubStatus.Builder("pending").build();
+//		GitHubStatusHandler ghStatusHandler = new GitHubStatusHandler(status);
+//		ghStatusHandler.postStatus("jsjolen","smallest-java-ci","c7cf7d3ae6f7638a6c7c02a8f4630d803c52478b","ciServerTestResults","REgyNjQyY2lzZXJ2ZXI=");
+//		new GitHubStatusHandler(status).postStatus("jsjolen","smallest-java-ci","c7cf7d3ae6f7638a6c7c02a8f4630d803c52478b","smallestjavaci", "c21hbGxlc3RqYXZhY2k6ZXZlcnl0aGluZ2lzaGVyZTEyMw==");
 
 	    Server server = new Server(8080);
 	    server.setHandler(new ContinuousIntegrationServer()); 
@@ -149,13 +150,25 @@ public class ContinuousIntegrationServer extends AbstractHandler
 					buildWriter.log(buildOutput, commitHash, timestamp);
 					testWriter.log(testOutput, commitHash, timestamp);
 					try {
-					    // Hard coding these things.
-					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
-								      "46", buildOutput);
-					    Thread.sleep(5);
-					    // Hard coding these things.
-					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
-								      "46", testOutput);
+//					    // Hard coding these things.
+//					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
+//								      "46", buildOutput);
+//					    Thread.sleep(5);
+//					    // Hard coding these things.
+//					    GithubComment.sendComment("jsjolen", "smallest-java-ci",
+//								      "46", testOutput);
+
+						GitHubStatus buildStatus = new GitHubStatus.Builder(GHStatusUtils.parseGradleOutput(buildOutput)).
+								withDescription("Gradle build result from CI").
+								withContext("continuous-integration/jenkins").
+								build();
+						new GitHubStatusHandler(buildStatus).postStatus("jsjolen","smallest-java-ci",pre.getHeadHash(),"smallestjavaci", "Basic c21hbGxlc3RqYXZhY2k6ZXZlcnl0aGluZ2lzaGVyZTEyMw==");
+
+//						GitHubStatus testStatus = new GitHubStatus.Builder(GHStatusUtils.parseGradleOutput(testOutput)).
+//								withDescription("Gradle test result from CI").
+//								withContext("continuous-integration/jenkins").
+//								build();
+//						new GitHubStatusHandler(testStatus).postStatus("jsjolen","smallest-java-ci",pre.getHeadHash(),"ciServerTestResults","REgyNjQyY2lzZXJ2ZXI=");
 					}
 					catch(Exception e) {
 					    System.out.println(e);
