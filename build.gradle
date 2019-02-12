@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+repositories {
+    mavenCentral()
+}
+test {
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+javadoc {
+	source = sourceSets.main.allJava
+	classpath = configurations.compile
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.14.v20181114'
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compile 'org.apache.httpcomponents:httpclient:4.5.7'
+    compile group: 'org.eclipse.jetty', name: 'jetty-util', version: '9.4.14.v20181114'
+    compile group: 'org.eclipse.jetty', name: 'jetty-util-ajax', version: '9.4.14.v20181114'
+    compile group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.14.v20181114'
+    compile 'javax.mail:mail:1.4.7'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = '1.2.1'
+mainClassName = 'acime.ContinuousIntegrationServer'
