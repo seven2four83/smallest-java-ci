@@ -36,8 +36,9 @@ public class GitRunnerTest {
     public void testCheckout() throws IOException, InterruptedException {
         GitRunner gr = new GitRunner(new BasicRuntimeFactory());
         File repoDir = gr.cloneRepo("https://github.com/jsjolen/smallest-java-ci.git");
-        gr.checkoutCommit(repoDir, "1491e8e189592d6ac7188dde490b2171a9221f29");
-        File repoContainer = new File(repoDir.getPath() + "/smallest-java-ci/src/main/java/acime");
+        File repository = new File(repoDir+"/"+repoDir.list()[0]);
+        gr.checkoutCommit(repository, "1491e8e189592d6ac7188dde490b2171a9221f29");
+        File repoContainer = new File(repository.getPath() + "/src/main/java/acime");
         String[] repoFileNames= {"ContinuousIntegrationServer.java"};
         Assertions.assertEquals(true, repoContainer.isDirectory());
         for (int i = 0; i < repoContainer.list().length; i++) {
